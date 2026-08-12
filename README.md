@@ -24,7 +24,7 @@ The reference runtime uses [`Gigax/NPC-LLM-3_8B`](https://huggingface.co/Gigax/N
 Python 3.10+ is required.
 
 ```bash
-git clone <YOUR-MATE-REPOSITORY-URL>
+git clone https://github.com/seclusioner/MATE-NPC-Security.git
 cd MATE-NPC-Security
 
 pip install -e .
