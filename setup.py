@@ -33,6 +33,7 @@ setup(
         "outlines",
         "pydantic",
         "PyYAML",
+        "python-dotenv",
         "torch",
         "transformers",
     ],
