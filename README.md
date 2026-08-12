@@ -560,7 +560,7 @@ If you use this repository in academic work, please cite:
 
 ```bibtex
 @software{lu2026matenpcsecurity,
-  author = {Jing Lu and Jing-ming Guo},
+  author = {Jing Lu},
   title  = {MATE-NPC-Security},
   year   = {2026}
 }
