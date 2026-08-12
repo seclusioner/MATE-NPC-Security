@@ -10,6 +10,8 @@ MATE integrates representation-based risk detection with action-level policy and
 - **TEG** — Threat-Evidence Gate at the execution boundary
 - **Low-FPR Sparse Multi-RAAC** — compact Layer-1 detector variant
 
+![MATE-NPC-Security architecture](docs/assets/structure.png)
+
 The reference runtime uses [`Gigax/NPC-LLM-3_8B`](https://huggingface.co/Gigax/NPC-LLM-3_8B).
 
 > **For application developers:** you do **not** need the training datasets to run MATE inference.
