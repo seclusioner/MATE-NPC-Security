@@ -1,29 +1,62 @@
-from setuptools import setup, find_packages
+from pathlib import Path
+
+from setuptools import find_packages, setup
+
+
+ROOT = Path(__file__).parent
+
 
 setup(
-    name="gigax",
-    version="0.1",
-    description="Call LLM-powered NPCs from your game, at runtime.",
-    long_description=open("README.md").read(),
+    name="mate-npc-security",
+    version="0.1.0",
+    description=(
+        "Layered runtime security for "
+        "LLM-powered NPC agents."
+    ),
+    long_description=(
+        ROOT / "README.md"
+    ).read_text(
+        encoding="utf-8"
+    ),
     long_description_content_type="text/markdown",
-    url="http://github.com/GigaxGames/gigax",
-    author="Gigax team",
-    author_email="tristan@gig.ax",
+    author="Jing Lu and Jing-ming Guo",
+    author_email="M11307506@mail.ntust.edu.tw",
     license="MIT",
-    packages=find_packages(),
+    packages=find_packages(
+        exclude=(
+            "tests",
+            "tests.*",
+        )
+    ),
     install_requires=[
+        "numpy",
         "outlines",
         "pydantic",
-        "openai",
-        "outlines",
+        "PyYAML",
+        "torch",
         "transformers",
-        "llama-cpp-python",
     ],
+    extras_require={
+        "train": [
+            "datasets",
+            "scikit-learn",
+            "tqdm",
+        ],
+        "test": [
+            "pytest",
+        ],
+    },
+    entry_points={
+        "console_scripts": [
+            "mate-npc=examples.demo:main",
+        ],
+    },
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
+        "Intended Audience :: Science/Research",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.10",
     ],
     python_requires=">=3.10",
     zip_safe=False,

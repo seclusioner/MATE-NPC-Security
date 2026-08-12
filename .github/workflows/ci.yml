@@ -1,31 +1,121 @@
-name: Linter
+name: MATE CI
 
 on:
+  push:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - main
-  # To test workflow without event trigger
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  build:
+  test:
+    name: Test / Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
+
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version:
+          - "3.10"
+          - "3.12"
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install ruff
-    - name: Analysing the code with pylint
-      run: |
-        ruff check $(git ls-files '*.py')
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: setup.py
+
+      - name: Show environment
+        run: |
+          python --version
+          pip --version
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[train,test]"
+          python -m pip check
+
+      - name: Import smoke test
+        run: |
+          python - <<'PY'
+          import gigax
+          import training
+          import examples
+
+          print("gigax:", gigax.__file__)
+          print("training:", training.__file__)
+          print("examples:", examples.__file__)
+          PY
+
+      - name: Run MATE test suite
+        run: |
+          pytest -q
+
+  package:
+    name: Build and Test Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: setup.py
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build distribution
+        run: |
+          python -m build
+
+      - name: Validate distribution
+        run: |
+          python -m twine check dist/*
+
+      - name: Smoke test built wheel
+        run: |
+          python -m venv /tmp/mate-wheel-test
+
+          /tmp/mate-wheel-test/bin/python -m pip install --upgrade pip
+          /tmp/mate-wheel-test/bin/pip install dist/*.whl
+
+          cd /tmp
+
+          /tmp/mate-wheel-test/bin/python - <<'PY'
+          import gigax
+          import training
+          import examples
+
+          print("gigax:", gigax.__file__)
+          print("training:", training.__file__)
+          print("examples:", examples.__file__)
+          PY
+
+          /tmp/mate-wheel-test/bin/mate-npc --help
+
+      - name: Upload distribution artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: mate-npc-security-dist
+          path: dist/
+          retention-days: 7

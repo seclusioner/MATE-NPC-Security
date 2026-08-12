@@ -1,0 +1,49 @@
+{
+  "format_version": 2,
+  "name": "Low-FPR Sparse Multi-RAAC (fusion target FPR=0.01)",
+  "method": "sparse_multiraac_pooled_benign_lowfpr",
+  "layers": [
+    24,
+    28,
+    30
+  ],
+  "top_k_by_family": {
+    "harm": 256,
+    "injection": 32
+  },
+  "fusion": "max normalized head margin",
+  "fusion_threshold": 0.0,
+  "fusion_target_fpr": 0.01,
+  "fusion_calibration": {
+    "target_fpr": 0.01,
+    "actual_tpr": 1.0,
+    "actual_fpr": 0.0,
+    "youden_j": 1.0,
+    "metrics": {
+      "n": 181,
+      "positive_n": 91,
+      "negative_n": 90,
+      "tp": 91,
+      "fp": 0,
+      "tn": 90,
+      "fn": 0,
+      "threshold": 0.0,
+      "tpr": 1.0,
+      "fpr": 0.0,
+      "specificity": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "accuracy": 1.0,
+      "balanced_accuracy": 1.0,
+      "youden_j": 1.0,
+      "auroc": 1.0,
+      "auprc": 0.9999999999999999
+    }
+  },
+  "head_target_fpr": 0.01,
+  "training_negative_policy": "pooled benign across all risk families",
+  "selected_feature_union": 276,
+  "selected_feature_overlap": 12,
+  "held_out_policy": "No held-out test participates in K selection, feature selection, fitting, or calibration."
+}

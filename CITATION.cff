@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use MATE-NPC-Security in your research, please cite this software."
+title: "MATE-NPC-Security"
+type: software
+version: 0.1.0
+date-released: 2026-08-11
+authors:
+  - family-names: "Lu"
+    given-names: "Jing"
+    email: "M11307506@mail.ntust.edu.tw"
+    affiliation: "National Taiwan University of Science and Technology"
+  - family-names: "Guo"
+    given-names: "Jing-ming"
+    email: "jmguo@seed.net.tw"
+    affiliation: "National Taiwan University of Science and Technology"
+license: MIT

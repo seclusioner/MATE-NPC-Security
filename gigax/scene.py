@@ -1,8 +1,8 @@
 from enum import Enum
 import re
 from typing import Union
-from pydantic import BaseModel, Field
-
+from pydantic import BaseModel, Field, ConfigDict
+from gigax.memory import Memory
 
 class ParameterType(str, Enum):
     character = "<character>"
@@ -44,13 +44,14 @@ class Item(Object):
 
 
 class Character(Object):
-    """
-    Describes a character in the game world, i.e. an adventurer or an NPC.
-    """
-
     current_location: Location
+    memories: list[Memory] = Field(default_factory=list)
 
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
+    def add_memory(self, memory: Memory):
+        self.memories.append(memory)
+    
 class Skill(BaseModel):
     """
     Model for a skill that can be performed by a character.
@@ -104,7 +105,11 @@ class Skill(BaseModel):
 
 
 class ProtagonistCharacter(Character):
-    memories: list[str] = Field(..., description="Memories that the character has.")
-    quests: list[str] = Field(..., description="Quests that the character is on.")
-    skills: list[Skill] = Field(..., description="Skills that the character can use.")
+    skills: list[Skill] = Field(default_factory=list)
     psychological_profile: str
+    quests: list[str] = Field(default_factory=list)
+    memories: list[Memory] = Field(default_factory=list)
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+        

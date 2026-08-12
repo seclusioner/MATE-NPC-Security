@@ -1,0 +1,55 @@
+model:
+  id: Gigax/NPC-LLM-3_8B
+  dtype: bfloat16
+  device_map: auto
+  detector_chat_template: phi3_manual
+runtime:
+  defense: raac_multiaction
+actions:
+  default_target: Aldren
+  fallback_action: Say
+  catalog:
+  - name: Say
+    description: '[SAFE] Talk to another character.'
+    parameters:
+    - character
+    - content
+    risk_level: low
+    intent: general
+  - name: Observe
+    description: '[SAFE] Observe a character or situation.'
+    parameters:
+    - character
+    risk_level: low
+    intent: observe
+  - name: Warn
+    description: '[LOW-RISK] Warn a character to avoid danger.'
+    parameters:
+    - character
+    - content
+    risk_level: medium
+    intent: warn
+  - name: Report
+    description: '[MEDIUM] Report a suspicious situation.'
+    parameters:
+    - character
+    - content
+    risk_level: medium
+    intent: report
+  - name: Attack
+    description: '[CRITICAL] Physical attack requiring trusted authorization.'
+    parameters:
+    - character
+    risk_level: critical
+    intent: attack
+layer1:
+  type: original_multiraac
+  detectors:
+  - path: ../artifacts/phi3/original/harm_detector.pt
+    enabled: true
+    threshold_scale: 1.0
+    margin: 0.0
+  - path: ../artifacts/phi3/original/injection_detector.pt
+    enabled: true
+    threshold_scale: 1.0
+    margin: 0.0

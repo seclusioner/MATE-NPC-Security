@@ -1,4 +1,5 @@
 import outlines
+
 from gigax.scene import (
     Character,
     Item,
@@ -10,7 +11,6 @@ from gigax.parse import CharacterAction
 from jinja2 import Template
 
 
-@outlines.prompt
 def NPCPrompt(
     context: str,
     locations: list[Location],
@@ -19,7 +19,7 @@ def NPCPrompt(
     items: list[Item],
     events: list[CharacterAction],
 ):
-    """
+    template_str = """
     - WORLD KNOWLEDGE: {{ context }}
     - KNOWN LOCATIONS: {{ locations | map(attribute='name') | join(', ') }}
     - NPCS: {{ NPCs | map(attribute='name') | join(', ') }}
@@ -31,7 +31,8 @@ def NPCPrompt(
     {% endfor %}
 
     - PROTAGONIST NAME: {{ protagonist.name }}
-    - PROTAGONIST PSYCHOLOGICAL PROFILE: {{ protagonist.description }}
+    - PROTAGONIST DESCRIPTION: {{ protagonist.description }}
+    - PROTAGONIST PSYCHOLOGICAL PROFILE: {{ protagonist.psychological_profile }}
     - PROTAGONIST MEMORIES:
     {% for memory in protagonist.memories %}
     {{ memory }}
@@ -45,8 +46,17 @@ def NPCPrompt(
     {{ skill.to_training_format() }}
     {% endfor %}
 
-    {{ protagonist.name }}:
-    """
+    {{ protagonist.name }}: (choose an action)"""
+    
+    tpl = Template(template_str)
+    return tpl.render(
+        context=context,
+        locations=locations,
+        NPCs=NPCs,
+        protagonist=protagonist,
+        items=items,
+        events=events
+    )
 
 
 def llama_chat_template(
