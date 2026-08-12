@@ -12,7 +12,7 @@ MATE integrates representation-based risk detection with action-level policy and
 
 The reference runtime uses [`Gigax/NPC-LLM-3_8B`](https://huggingface.co/Gigax/NPC-LLM-3_8B).
 
-> **For application developers:** you do **not** need the training datasets to run MATE inference.  
+> **For application developers:** you do **not** need the training datasets to run MATE inference.
 > Install the package, provide the detector artifacts, choose a config, and run `scripts/run_mate.sh`.
 
 ---
@@ -409,7 +409,7 @@ MATE-NPC-Security/
 
 # Reproducing / Training Detectors
 
-> This section is for researchers or users who want to rebuild Layer-1 detectors.  
+> This section is for researchers or users who want to rebuild Layer-1 detectors.
 > It is **not required for normal inference or application development**.
 
 ## Preparing public text pools

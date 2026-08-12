@@ -16,7 +16,7 @@ class Memory(BaseModel):
     importance: int = Field(default=5, ge=1, le=10) # 1-10 權重
     created_at: datetime = Field(default_factory=datetime.now)
     # is_truncated: bool = False # 標記是否為被截斷的歷史
-    
+
     tags: List[str] = Field(default_factory=list)
     risk_level: int = Field(default=0, ge=0, le=10)
 
@@ -24,7 +24,7 @@ class Memory(BaseModel):
 
     def summary(self):
         return f"{self.speaker}: {self.dialogue} ({self.action})"
-        
+
     def __str__(self):
         ts = self.created_at.strftime("%H:%M:%S")
         return f"[{ts}] {self.speaker}: {self.dialogue} (Action: {self.action})"
