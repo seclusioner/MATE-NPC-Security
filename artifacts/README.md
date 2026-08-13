@@ -18,8 +18,8 @@ artifacts/phi3/original/
 Build with:
 ```bash
 bash scripts/build_original_multiraac.sh \
-  data/train.jsonl \
-  data/validation.jsonl
+  data/prepared/train.jsonl \
+  data/prepared/validation.jsonl
 ```
 
 ## Low-FPR Sparse Multi-RAAC
@@ -44,8 +44,8 @@ system.json
 Build with:
 ```bash
 bash scripts/build_lowfpr_sparse_multiraac.sh \
-  data/train.jsonl \
-  data/validation.jsonl
+  data/prepared/train.jsonl \
+  data/prepared/validation.jsonl
 ```
 
 Do not mix detector heads and system.json files from
